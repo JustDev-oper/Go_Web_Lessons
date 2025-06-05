@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Изучаем Go Web</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        header {
+            background: #3498db;
+            color: white;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 5px;
+        }
+
+        nav a {
+            color: white;
+            margin-right: 15px;
+            text-decoration: none;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        .user-info {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .hobbies {
+            margin: 20px 0;
+        }
+
+        .hobbies li {
+            margin-bottom: 5px;
+        }
+
+        footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            text-align: center;
+            color: #7f8c8d;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Изучаем Go Web</h1>
+    <nav>
+        <a href="/">Главная</a>
+        <a href="/about">О проекте</a>
+        <a href="/contacts">Контакты</a>
+    </nav>
+</header>
+
+<main>
+    <div class="user-info">
+        <h2>Данные пользователя</h2>
+
+        {{ if eq .Age 25 }}
+        <p><b>Привет, ровесник!</b></p>
+        {{ else }}
+        <p>Привет, пользователь!</p>
+        {{ end }}
+
+        <p><b>Имя:</b> {{ .Name }}</p>
+        <p><b>Возраст:</b> {{ .Age }}</p>
+        <p><b>Статус:</b> {{ if .Happiness }} 😊 Счастлив {{ else }} 😞 Не счастлив {{ end }}</p>
+    </div>
+
+    <div class="hobbies">
+        <h3>Хобби:</h3>
+        <ul>
+            {{ range .Hobbies }}
+            <li>{{ . }}</li>
+            {{ else }}
+            <li>У пользователя нет хобби</li>
+            {{ end }}
+        </ul>
+    </div>
+
+    <div>
+        <h3>Пример работы с условиями:</h3>
+        {{ if gt .Age 30 }}
+        <p>Вы опытный пользователь</p>
+        {{ else if gt .Age 20 }}
+        <p>Вы молодой пользователь</p>
+        {{ else }}
+        <p>Вы совсем юный пользователь</p>
+        {{ end }}
+    </div>
+</main>
+
+<footer>
+    <p>Пример простого шаблона для изучения Go Web</p>
+</footer>
+</body>
+</html>
