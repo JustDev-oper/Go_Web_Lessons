@@ -4,7 +4,16 @@
 
 <main class="container my-5">
     <h1 class="cover-heading">Главная страница</h1>
-    <p>Loremsfnsdjfnfigvnfifnfinnffnfsufjuioqwejfiowuefwe nw efnefnwfnewfnewfndnsfin dnfdnf nwncd nfn </p>
+    {{ range . }}
+    <div class="alert alert-danger">
+        <h2>{{ .Title }}</h2>
+        <p>{{ .Anons }}</p>
+        <a href="/post/{{ .Id }}" class="btn btn-primary">Читать далее</a>
+    </div>
+    {{ else }}
+    <p>Статей нет</p>
+    {{ end }}
+
 </main>
 
 {{ template "footer" }}

@@ -1,0 +1,18 @@
+{{ define "create" }}
+
+{{ template "header" }}
+
+<main class="container my-5">
+    <h1 class="cover-heading">Форма создания статьи</h1>
+    <form action="/save_article" method="post">
+        <input type="text" name="title" id="title" placeholder="Введите название статьи" class="form-control mb-3">
+        <textarea name="anons" id="anons" class="form-control mb-3" placeholder="Введите анонс статьи"></textarea>
+        <textarea name="full_text" id="full_text" class="form-control mb-3"
+                  placeholder="Введите полный текст статьи"></textarea>
+        <button class="btn btn-success">Создать</button>
+    </form>
+</main>
+
+{{ template "footer" }}
+
+{{ end }}
