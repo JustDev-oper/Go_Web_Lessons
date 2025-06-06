@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/gorilla/mux"
 	"html/template"
 	"net/http"
 )
@@ -70,7 +71,7 @@ func saveArticle(w http.ResponseWriter, r *http.Request) {
 		defer db.Close()
 
 		// Установка данных
-		insert, err := db.Query(fmt.Sprintf("INSERT INTO `articles` (`title`, `anons`, `full_text`) VALUES ('%s', '%s', '%s')", title, anons, fullText))
+		insert, err := db.Query("INSERT INTO `articles` (`title`, `anons`, `full_text`) VALUES (?, ?, ?)", title, anons, fullText)
 		if err != nil {
 			panic(err)
 		}
@@ -80,10 +81,47 @@ func saveArticle(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func showPost(w http.ResponseWriter, r *http.Request) {
+	var post Article
+
+	id := mux.Vars(r)["id"]
+
+	db, err := sql.Open("mysql", "root:Ar11042008@tcp(127.0.0.1:3306)/golang")
+	if err != nil {
+		panic(err)
+	}
+	defer db.Close()
+
+	res, err := db.Query("SELECT * FROM `articles` WHERE `id`=?", id)
+	if err != nil {
+		fmt.Fprintf(w, err.Error())
+	}
+
+	for res.Next() {
+		err = res.Scan(&post.Id, &post.Title, &post.Anons, &post.FullText)
+		if err != nil {
+			fmt.Fprintf(w, err.Error())
+		}
+		post = post
+	}
+
+	temp, err := template.ParseFiles("News_site/templates/showPost.html", "News_site/templates/header.html", "News_site/templates/footer.html")
+	if err != nil {
+		fmt.Fprintf(w, err.Error())
+	}
+	temp.ExecuteTemplate(w, "showPost", post)
+
+}
+
 func handleFunc() {
-	http.HandleFunc("/", index)
-	http.HandleFunc("/create", create)
-	http.HandleFunc("/save_article", saveArticle)
+	router := mux.NewRouter()
+
+	router.HandleFunc("/", index).Methods("GET")
+	router.HandleFunc("/create", create).Methods("GET")
+	router.HandleFunc("/save_article", saveArticle).Methods("POST")
+	router.HandleFunc("/post/{id:[0-9]+}", showPost).Methods("GET")
+
+	http.Handle("/", router)
 	http.ListenAndServe(":8080", nil)
 }
 

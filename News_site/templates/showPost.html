@@ -1,0 +1,17 @@
+{{ define "showPost" }}
+
+{{ template "header" }}
+
+<main class="container my-5">
+    <h1 class="cover-heading">{{ .Title }}</h1>
+    <h3>{{ .Id }}</h3>
+    <br>
+    <h2>{{ .Anons }}</h2>
+    <br>
+    <p class="fs-2">{{ .FullText }}</p>
+    <a href="/" class="btn btn-danger">Назад</a>
+</main>
+
+{{ template "footer" }}
+
+{{ end }}
